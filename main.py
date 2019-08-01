@@ -1,14 +1,5 @@
 from dictionary import dict
-
-def cardvalue(card): return dict[card[0]] + dict[card[-1]]
-def sortcards(cardList): return sorted(cardList, key=cardvalue)
-
-def ishigher(card1, card2):
-    if dict[card1[0]] < dict[card2[0]]: return False
-    elif dict[card1[0]] == dict[card2[0]]:
-        if dict[card1[1]] <= dict[card2[1]]: return False
-    
-    return True
+from bigtwo import *
 
 def play(hand, roundStart, playToBeat, roundHistory, playerNo, handSize, scores, roundNo):
     # If we are starting, play the lowest card or 3 of diamonds.
@@ -16,12 +7,7 @@ def play(hand, roundStart, playToBeat, roundHistory, playerNo, handSize, scores,
         if roundStart: return ["3D"]
         else: return [sortcards(hand)[0]]
 
-    # Sort deck and play lowest available card.
-    for card in sortcards(hand):
-        if ishigher(card, playToBeat[0]): return [card]
-
-    # Mission failed, pass.
-    return []
+    return [findlegal(hand)[0]]
 
 """
 The parameters to this function are:
