@@ -1,4 +1,5 @@
 from dictionary import dict, allcards
+import itertools
 
 def cardvalue(card): return dict[card[0]] + dict[card[-1]]
 def sortcards(cardlist): return sorted(cardlist, key=cardvalue)
@@ -7,6 +8,11 @@ def ispair(card1, card2):
     """Checks if two cards are a pair."""
     if card1[0] == card2[0]: return True
     return False
+
+def getallpairs(cardlist):
+    """Returns legal pairs from `cardlist`."""
+    legalpairs = [list(card) for card in list(itertools.combinations(cardlist, 2)) if ispair(card[0], card[1])]
+    return legalpairs
 
 def ispairhigher(pair1, pair2):
     """Checks whether `pair1` is higher than `pair2`."""
