@@ -39,10 +39,10 @@ def countcards(hand, roundhistory):
     opponentcards = [cards for cards in allcards if str(roundhistory).count(cards)]
     return set(allcards).difference(hand, opponentcards)
 
-def findlegal(hand, playToBeat, isStartOfRound, playType: int=None):
+def findlegal(hand, playToBeat, playType: int=None):
     """Finds legal moves with your hand and the current play to beat."""
     if playType == 1: legal = [immigrant for immigrant in hand if ishigher(immigrant, playToBeat[0])]
-    if playType == 2: pass # 2-card plays
+    if playType == 2: legal = [pairs for pairs in getallpairs(hand) if ispairhigher(pairs, playToBeat)]
     if playType == 3: pass # 3-card plays
     if playType == 5: pass # 5-card plays
     
