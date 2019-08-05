@@ -22,9 +22,9 @@ def ispair(card1, card2):
     if card1[0] == card2[0]: return True
     return False
 
-def getallpairs(cardlist):
+def countpairs(hand):
     """Returns legal pairs from `cardlist`."""
-    legalpairs = [list(card) for card in list(itertools.combinations(cardlist, 2)) if ispair(card[0], card[1])]
+    legalpairs = [list(card) for card in list(itertools.combinations(hand, 2)) if ispair(card[0], card[1])]
     return legalpairs
 
 def ispairhigher(pair1, pair2):
@@ -49,9 +49,14 @@ def istriplehigher(triple1, triple2):
     if dict[triple1[0][0]] > dict[triple2[0][0]]: return True
     return False
 
+def counttriples(hand):
+    """Returns legal pairs from `cardlist`."""
+    legalpairs = [list(card) for card in list(itertools.combinations(hand, 3)) if istriple(card[0], card[1], card[2])]
+    return legalpairs
+
 def findlegal(hand, playToBeat, playType: int=1):
     """Finds legal moves with your hand and the current play to beat."""    
     if playType == 1: return sortcards([immigrant for immigrant in hand if ishigher(immigrant, playToBeat[0])])
-    if playType == 2: return [pairs for pairs in getallpairs(hand) if ispairhigher(pairs, playToBeat)]
-    if playType == 3: pass # 3-card plays
+    if playType == 2: return [pairs for pairs in countpairs(hand) if ispairhigher(pairs, playToBeat)]
+    if playType == 3: return [triples for triples in counttriples(hand) if istriplehigher(triples, playToBeat)]
     if playType == 5: pass # 5-card plays
