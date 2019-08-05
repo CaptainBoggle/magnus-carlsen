@@ -1,13 +1,22 @@
 from dictionary import dict
 from bigtwo import *
 
+# Bot works and can play 2-card plays.
+# When start of trick, magnus-carlsen only plays 1 card.
+# fix pls
+
 def play(hand, roundStart, playToBeat, roundHistory, playerNo, handSize, scores, roundNo):
     # If we are starting, play the lowest card or 3 of diamonds.
     if len(playToBeat) == 0:
         if roundStart: return ["3D"]
         else: return [sortcards(hand)[0]]
-    elif len(playToBeat) == 1: return [findlegal(hand, playToBeat)[0]]
-    elif len(playToBeat) == 2: return findlegal(hand, playToBeat)
+    elif len(playToBeat) == 1: 
+        try: return [findlegal(hand, playToBeat, 1)[0]]
+        except IndexError: return []
+    elif len(playToBeat) == 2: 
+        try: return findlegal(hand, playToBeat, 2)[0]
+        except IndexError: return []
+    elif len(playToBeat) == 3: return []
 
 """
 The parameters to this function are:

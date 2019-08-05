@@ -4,6 +4,19 @@ import itertools
 def cardvalue(card): return dict[card[0]] + dict[card[-1]]
 def sortcards(cardlist): return sorted(cardlist, key=cardvalue)
 
+def countcards(hand, roundhistory):
+    """Returns cards that have not been played."""
+    opponentcards = [cards for cards in allcards if str(roundhistory).count(cards)]
+    return set(allcards).difference(hand, opponentcards)
+
+def ishigher(card1, card2):
+    """Checks whether `card1` is higher than `card2`."""
+    if dict[card1[0]] < dict[card2[0]]: return False
+    elif dict[card1[0]] == dict[card2[0]]:
+        if dict[card1[1]] <= dict[card2[1]]: return False
+
+    return True
+
 def ispair(card1, card2):
     """Checks if two cards are a pair."""
     if card1[0] == card2[0]: return True
@@ -26,24 +39,19 @@ def ispairhigher(pair1, pair2):
 
     return False
 
-def ishigher(card1, card2):
-    """Checks whether `card1` is higher than `card2`."""
-    if dict[card1[0]] < dict[card2[0]]: return False
-    elif dict[card1[0]] == dict[card2[0]]:
-        if dict[card1[1]] <= dict[card2[1]]: return False
+def istriple(card1, card2, card3):
+    """Checks whether cards are valid triples."""
+    if card1[0] == card2[0] == card3[0]: return True
+    return False
 
-    return True
+def istriplehigher(triple1, triple2):
+    """Compares triples and checks whether `triple1` is higher than `triple2`."""
+    if dict[triple1[0][0]] > dict[triple2[0][0]]: return True
+    return False
 
-def countcards(hand, roundhistory):
-    """Returns cards that have not been played."""
-    opponentcards = [cards for cards in allcards if str(roundhistory).count(cards)]
-    return set(allcards).difference(hand, opponentcards)
-
-def findlegal(hand, playToBeat, playType: int=None):
-    """Finds legal moves with your hand and the current play to beat."""
-    if playType == 1: legal = [immigrant for immigrant in hand if ishigher(immigrant, playToBeat[0])]
-    if playType == 2: legal = [pairs for pairs in getallpairs(hand) if ispairhigher(pairs, playToBeat)]
+def findlegal(hand, playToBeat, playType: int=1):
+    """Finds legal moves with your hand and the current play to beat."""    
+    if playType == 1: return sortcards([immigrant for immigrant in hand if ishigher(immigrant, playToBeat[0])])
+    if playType == 2: return [pairs for pairs in getallpairs(hand) if ispairhigher(pairs, playToBeat)]
     if playType == 3: pass # 3-card plays
     if playType == 5: pass # 5-card plays
-    
-    return sortcards(legal)
