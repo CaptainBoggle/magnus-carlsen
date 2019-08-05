@@ -35,25 +35,3 @@ Each *trick_play* entry is a `(player_no, play)` 2-tuple, where `player_no` is a
 
 This function should return an empty list (`[]`) to indicate a pass (see "Playing a Round"), or a list of card strings, indicating that you want to play these cards to the table as a valid play.
 """
-
-if __name__ == '__main__':
-  # Write your own test cases for your `play` function here.
-  # These can be run with the Run button and will not affect the tournament or marking.
-  
-  # Here's an example test case and testing code to kick you off.
-  TESTS = [  # [ expected return value, inputs ]
-    [['3D'], [['3D', '4D', '4H', '7D', '8D', '8H', '0D', '0C', 'JH', 'QC', 'QS', 'KH', 'AS'], True, [], [[]], 0, [13, 13, 13, 13], [0, 0, 0, 0], 0]],
-    # Add more tests here.
-  ]
-  
-  # This runs the above test cases.
-  for i, test in enumerate(TESTS):
-    expected_return_value, inputs = test
-    actual_return_value = play(*inputs)
-    if actual_return_value == expected_return_value:
-      print('PASSED {}/{}.'.format(i + 1, len(TESTS)))
-    else:
-      print('FAILED {}/{}.'.format(i + 1, len(TESTS)))
-      print('    inputs:', repr(inputs))
-      print('  expected:', repr(expected_return_value))
-      print('    actual:', repr(actual_return_value))
