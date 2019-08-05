@@ -4,23 +4,21 @@ def cardvalue(card): return dict[card[0]] + dict[card[-1]]
 def sortcards(cardlist): return sorted(cardlist, key=cardvalue)
 
 def ispair(card1, card2):
-    if dict[card1[0]] == dict[card2[0]]: return True
+    """Checks if two cards are a pair."""
+    if card1[0] == card2[0]: return True
     return False
 
-def ishigherexp(*cards):
-    if all(isinstance(card, str) for card in cards):
-        if dict[cards[0][0]] < dict[cards[1][0]]: return False
-        elif dict[cards[0][0]] == dict[cards[1][0]]:
-            if dict[cards[0][1]] <= dict[cards[1][1]]: return False
-    elif all(isinstance(card, list) for card in cards):
-        if dict[cards[0][0][0]] > dict[cards[1][0][0]]: return True
-        elif dict[cards[0][0][0]] == dict[cards[1][0][0]]:
-            if dict[cards[0][0][1]] == dict[cards[1][0][1]]:
-                pass # At this point, we know that the rank is equal.
-                     # To-do: actually finish
+def ispairhigher(pair1, pair2):
+    """Checks whether `pair1` is higher than `pair2`."""
+    if dict[pair1[0][0]] > dict[pair2[0][0]]: return True
+    if dict[pair1[0][0]] == dict[pair2[0][0]]:
+        if dict[pair1[0][1]] > dict[pair1[1][1]]: firstsuit = dict[pair1[0][1]]
+        else: firstsuit = dict[pair1[1][1]]
+        if dict[pair2[0][1]] > dict[pair2[1][1]]: secondsuit = dict[pair2[0][1]]
+        else: secondsuit = dict[pair2[1][1]]
+        if firstsuit > secondsuit: return True
 
-# testing 123
-# print(ishigherexp("8S", "7S"))
+    return False
 
 def ishigher(card1, card2):
     """Checks whether `card1` is higher than `card2`."""
@@ -30,12 +28,12 @@ def ishigher(card1, card2):
 
     return True
 
-def countcards(hand, roundHistory: list=None):
+def countcards(hand, roundhistory):
     """Returns cards that have not been played."""
-    opponentcards = [cards for cards in allcards if str(roundHistory).count(cards)]
+    opponentcards = [cards for cards in allcards if str(roundhistory).count(cards)]
     return set(allcards).difference(hand, opponentcards)
 
-def findlegal(hand: list=None, playToBeat: list=None, isStartOfRound: bool=None, playType: int=None):
+def findlegal(hand, playToBeat, isStartOfRound, playType: int=None):
     """Finds legal moves with your hand and the current play to beat."""
     if playType == 1: legal = [immigrant for immigrant in hand if ishigher(immigrant, playToBeat[0])]
     if playType == 2: pass # 2-card plays
