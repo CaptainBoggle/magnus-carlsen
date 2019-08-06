@@ -14,7 +14,7 @@ def play(hand, roundStart, playToBeat, roundHistory, playerNo, handSize, scores,
         elif countpairs(hand):
             return countpairs(hand)[0]
         else:
-            return sortcards(hand)[0]
+            return [sortcards(hand)[0]]
     elif len(playToBeat) == 1 and findlegal(hand, playToBeat, 1): 
         return [findlegal(hand, playToBeat, 1)[0]]
     elif len(playToBeat) == 2 and findlegal(hand, playToBeat, 2): 
