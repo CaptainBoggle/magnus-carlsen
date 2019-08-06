@@ -15,12 +15,14 @@ def play(hand, roundStart, playToBeat, roundHistory, playerNo, handSize, scores,
             return countpairs(hand)[0]
         else:
             return sortcards(hand)[0]
-    elif len(playToBeat) == 1 and [findlegal(hand, playToBeat, 1)]: 
+    elif len(playToBeat) == 1 and findlegal(hand, playToBeat, 1): 
         return [findlegal(hand, playToBeat, 1)[0]]
     elif len(playToBeat) == 2 and findlegal(hand, playToBeat, 2): 
         return findlegal(hand, playToBeat, 2)[0]
     elif len(playToBeat) == 3 and findlegal(hand, playToBeat, 3):
         return findlegal(hand, playToBeat, 3)[0]
+
+    return []
 
 """
 The parameters to this function are:
