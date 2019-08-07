@@ -1,8 +1,15 @@
-from dictionary import dict, allcards
+from dictionary import *
 import itertools
 
+def rankvalue(card): return straightrank[card[0]]
 def cardvalue(card): return dict[card[0]] + dict[card[-1]]
-def sortcards(cardlist): return sorted(cardlist, key=cardvalue)
+
+def sortcards(cardlist, rank: bool=False):
+    """Sorts card using either `rankvalue()` or `cardvalue()`.
+    
+    If `rank` is true, returns rank. Else, returns total card value."""
+    if rank: return [rankvalue(cardrank) for cardrank in cardlist]
+    else: return sorted(cardlist, key=cardvalue)
 
 def countcards(hand, roundhistory):
     """Returns cards that have not been played."""
@@ -50,9 +57,17 @@ def istriplehigher(triple1, triple2):
     return False
 
 def counttriples(hand):
-    """Returns legal pairs from `cardlist`."""
-    legalpairs = [list(card) for card in list(itertools.combinations(hand, 3)) if istriple(card[0], card[1], card[2])]
-    return legalpairs
+    """Returns legal triples from `hand`."""
+    return [list(card) for card in list(itertools.combinations(hand, 3)) if istriple(card[0], card[1], card[2])]
+
+def countstraights(hand):
+    # Count straights.
+    pass
+
+def isstraight(cards):
+    sortedhand = sortcards(cards, True)
+    if sortedhand == list(range(min(sortedhand), max(sortedhand) + 1)): return True
+    return False
 
 def findlegal(hand, playToBeat, playType: int=1):
     """Finds legal moves with your hand and the current play to beat."""    

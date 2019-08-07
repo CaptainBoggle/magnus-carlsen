@@ -1,4 +1,3 @@
-from dictionary import dict
 from bigtwo import *
 
 def play(hand, roundStart, playToBeat, roundHistory, playerNo, handSize, scores, roundNo):
