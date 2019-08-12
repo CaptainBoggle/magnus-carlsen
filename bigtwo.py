@@ -11,11 +11,6 @@ def sortcards(cardlist, rank: bool=False):
     if rank: return [rankvalue(cardrank) for cardrank in cardlist]
     else: return sorted(cardlist, key=cardvalue)
 
-def countcards(hand, roundhistory):
-    """Returns cards that have not been played."""
-    opponentcards = [cards for cards in allcards if str(roundhistory).count(cards)]
-    return set(allcards).difference(hand, opponentcards)
-
 def ishigher(card1, card2):
     """Checks whether `card1` is higher than `card2`."""
     if dict[card1[0]] < dict[card2[0]]: return False
@@ -24,15 +19,15 @@ def ishigher(card1, card2):
 
     return True
 
+def countcards(hand, roundhistory):
+    """Returns cards that have not been played."""
+    opponentcards = [cards for cards in allcards if str(roundhistory).count(cards)]
+    return set(allcards).difference(hand, opponentcards)
+
 def ispair(card1, card2):
     """Checks if two cards are a pair."""
     if card1[0] == card2[0]: return True
     return False
-
-def countpairs(hand):
-    """Returns legal pairs from `cardlist`."""
-    legalpairs = [list(card) for card in list(itertools.combinations(hand, 2)) if ispair(card[0], card[1])]
-    return legalpairs
 
 def ispairhigher(pair1, pair2):
     """Checks whether `pair1` is higher than `pair2`."""
@@ -45,6 +40,11 @@ def ispairhigher(pair1, pair2):
         if firstsuit > secondsuit: return True
 
     return False
+
+def countpairs(hand):
+    """Returns legal pairs from `cardlist`."""
+    legalpairs = [list(card) for card in list(itertools.combinations(hand, 2)) if ispair(card[0], card[1])]
+    return legalpairs
 
 def istriple(card1, card2, card3):
     """Checks whether cards are valid triples."""
@@ -60,14 +60,22 @@ def counttriples(hand):
     """Returns legal triples from `hand`."""
     return [list(card) for card in list(itertools.combinations(hand, 3)) if istriple(card[0], card[1], card[2])]
 
-def countstraights(hand):
-    # Count straights.
-    pass
-
 def isstraight(cards):
     sortedhand = sortcards(cards, True)
     if sortedhand == list(range(min(sortedhand), max(sortedhand) + 1)): return True
     return False
+
+def isstraighthigher(stg1, stg2):
+    # Check if straights are higher.
+    pass
+
+def countstraights(hand):
+    # Count straights.
+    pass
+
+def isfullhouse(cards):
+    # Check if cards is a full house.
+    pass
 
 def findlegal(hand, playToBeat, playType: int=1):
     """Finds legal moves with your hand and the current play to beat."""    
