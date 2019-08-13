@@ -100,7 +100,7 @@ def countflushes(hand):
 
 def isfullhouse(cards): #make this not look like bad
     set1 = set()
-    counts = dict()
+    counts = {}
     for card in cards:
       set1.add(card[0])
     if len(set1) != 2:
@@ -116,6 +116,24 @@ def isfullhouse(cards): #make this not look like bad
       else:
         your_answer = False
     return your_answer
+
+  def betterfullhouse(first, second):
+    counts1 = {}
+    counts2 = {}
+    for card in first:
+      counts1[card[0]] = counts1.get(card[0], 0) + 1
+    for card in second:
+      counts2[card[0]] = counts2.get(card[0], 0) + 1
+    invertdict1 = {v: k for k, v in counts1.items()}
+    invertdict2 = {v: k for k, v in counts2.items()}
+    if dict[invertdict1[3]] > dict[invertdict2[3]]:
+      your_answer = True
+    else: 
+      your_answer = False
+    return your_answer
+
+
+
 
 def findlegal(hand, playToBeat, playType: int=1):
     """Finds legal moves with your hand and the current play to beat."""    
