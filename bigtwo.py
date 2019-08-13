@@ -98,9 +98,24 @@ def countflushes(hand):
     """Experimental: Counts all possible flushes."""
     return [plays for plays in everyfivecard(hand) if isflush(plays)]
 
-def isfullhouse(cards):
-    
-    pass
+def isfullhouse(cards): #make this not look like bad
+    set1 = set()
+    counts = dict()
+    for card in cards:
+      set1.add(card[0])
+    if len(set1) != 2:
+      your_answer = False
+    else:
+      for card in cards:
+        counts[card[0]] = counts.get(card[0], 0) + 1
+      if counts[list(set1)[0]] == 2 or counts[list(set1)[1]] == 2:
+        if counts[list(set1)[0]] == 3 or counts[list(set1)[1]] == 3:
+          your_answer = True
+        else:
+          your_answer = False
+      else:
+        your_answer = False
+    return your_answer
 
 def findlegal(hand, playToBeat, playType: int=1):
     """Finds legal moves with your hand and the current play to beat."""    
@@ -108,6 +123,16 @@ def findlegal(hand, playToBeat, playType: int=1):
     if playType == 2: return [pairs for pairs in countpairs(hand) if ispairhigher(pairs, playToBeat)]
     if playType == 3: return [triples for triples in counttriples(hand) if istriplehigher(triples, playToBeat)]
     if playType == 5: pass # 5-card plays
+
+
+
+
+
+
+
+
+
+
 
 # Experimental!
 # Experimental!
