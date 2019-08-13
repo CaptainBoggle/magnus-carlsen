@@ -1,7 +1,7 @@
 from dictionary import *
 import itertools
 
-def rankvalue(card): return straightrank[card[0]]
+def rankvalue(card): return dict[card[0]] / 10
 def cardvalue(card): return dict[card[0]] + dict[card[-1]]
 def seperatehand(hand, suit): return [card for card in hand if card[1] == suit]
 
@@ -51,7 +51,7 @@ def countpairs(hand):
 
 # Three-card section.
 def istriple(card1, card2, card3):
-    """Checks whether cards are valid triples."""
+    """Checks whether `card1`, `card2` and `card3` are valid triples."""
     if card1[0] == card2[0] == card3[0]: return True
     return False
 
@@ -65,12 +65,8 @@ def counttriples(hand):
     return [list(card) for card in list(itertools.combinations(hand, 3)) if istriple(card[0], card[1], card[2])]
 
 # Five-card section.
-def everyfivecard(hand):
-    """Returns every 5-card combination (not legal plays)."""
-    return [list(card) for card in list(itertools.combinations(hand, 5))]
-
 def isstraight(cards):
-    """Checks whether cards is a valid straight."""
+    """Checks whether `cards` is a valid straight."""
     sortedhand = sortcards(cards, True)
     if sortedhand == list(range(min(sortedhand), max(sortedhand) + 1)): return True
     return False
@@ -87,20 +83,36 @@ def isstraighthigher(stg1, stg2):
     return False
 
 def isflush(cards):
-    """Experimental: Checks whether cards is a valid flush."""
+    """Checks whether `cards` is a valid flush."""
     cardsets = set()
-    for cards in plays: cardsets.add(cards[1])
+    for card in sortcards(cards): cardsets.add(card[1])
     if len(cardsets) == 1: return True
 
     return False
 
-def countflushes(hand):
-    """Experimental: Counts all possible flushes."""
-    return [plays for plays in everyfivecard(hand) if isflush(plays)]
+def isflushhigher(flush1, flush2):
+    """Checks whether `flush1` is higher than `flush2`."""
+    flush1 = sortcards(flush1)
+    flush2 = sortcards(flush2)
+    
+    if dict[flush1[4][1]] > dict[flush2[4][1]]: return True
+    elif dict[flush1[4][1]] == dict[flush2[4][1]]:
+        if dict[flush1[4][0]] > dict[flush2[4][0]]: return True
+
+    return False
 
 def isfullhouse(cards):
-    
+    # Add full house functionality.
     pass
+
+def everyfivecard(hand, type: str=None):
+    """Returns every 5-card combination depending on `type`."""
+    fivecards = list(itertools.combinations(hand, 5))
+    if type == None: return [list(plays) for plays in fivecards]
+    if type == "flush": return [list(plays) for plays in fivecards if isflush(plays)]
+    if type == "straight": return [list(plays) for plays in fivecards if isstraight(plays)]
+
+# print(everyfivecard(["2S", "3S", "4S", "5S", "6S"], "flush"))
 
 def findlegal(hand, playToBeat, playType: int=1):
     """Finds legal moves with your hand and the current play to beat."""    
@@ -109,28 +121,23 @@ def findlegal(hand, playToBeat, playType: int=1):
     if playType == 3: return [triples for triples in counttriples(hand) if istriplehigher(triples, playToBeat)]
     if playType == 5: pass # 5-card plays
 
-# Experimental!
-# Experimental!
-# Experimental!
-    
-#def fullhouse(hand):
- #   allfaces = [f for f,s in hand]
-  #  allftypes = set(allfaces)
-  #  if len(allftypes) != 2:
-   #     return False
-  #  for f in allftypes:
-  #      if allfaces.count(f) == 3:
-  # #         allftypes.remove(f)
-   #         return 'full-house', [f, allftypes.pop()]
-   # else:
-   #     return False
+"""
+def fullhouse(hand):
+    allfaces = [f for f,s in hand]
+    allftypes = set(allfaces)
+    if len(allftypes) != 2:
+        return False
+    for f in allftypes:
+        if allfaces.count(f) == 3:
+            allftypes.remove(f)
+            return 'full-house', [f, allftypes.pop()]
+    else:
+        return False
 
-#def givefullhousepls(hand):
-   # for play in everyfivecard:
-   #     set = set{}
-  #      for card in play:
-   #         set.add(card[0])
-   #     if len(set) = 2:
-            
-             
-        
+def givefullhousepls(hand):
+    for play in everyfivecard:
+        set = set()
+        for card in play:
+            set.add(card[0])
+            if len(set) = 2:
+"""        
