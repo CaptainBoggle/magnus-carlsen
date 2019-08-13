@@ -140,4 +140,38 @@ def givefullhousepls(hand):
         for card in play:
             set.add(card[0])
             if len(set) = 2:
+
+              def isfullhouse(cards): #make this not look like bad
+                set1 = set()
+                counts = {}
+                for card in cards:
+                  set1.add(card[0])
+                if len(set1) != 2:
+                  your_answer = False
+                else:
+                  for card in cards:
+                    counts[card[0]] = counts.get(card[0], 0) + 1
+                  if counts[list(set1)[0]] == 2 or counts[list(set1)[1]] == 2:
+                    if counts[list(set1)[0]] == 3 or counts[list(set1)[1]] == 3:
+                      your_answer = True
+                    else:
+                      your_answer = False
+                  else:
+                    your_answer = False
+                return your_answer
+            
+              def betterfullhouse(first, second):
+                counts1 = {}
+                counts2 = {}
+                for card in first:
+                  counts1[card[0]] = counts1.get(card[0], 0) + 1
+                for card in second:
+                  counts2[card[0]] = counts2.get(card[0], 0) + 1
+                invertdict1 = {v: k for k, v in counts1.items()}
+                invertdict2 = {v: k for k, v in counts2.items()}
+                if dict[invertdict1[3]] > dict[invertdict2[3]]:
+                  your_answer = True
+                else: 
+                  your_answer = False
+                return your_answer
 """        
