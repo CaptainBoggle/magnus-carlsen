@@ -3,6 +3,7 @@ import itertools
 
 def rankvalue(card): return straightrank[card[0]]
 def cardvalue(card): return dict[card[0]] + dict[card[-1]]
+def seperatehand(hand, suit): return [card for card in hand if card[1] == suit]
 
 def sortcards(cardlist, rank: bool=False):
     """Sorts card using either `rankvalue()` or `cardvalue()`.
@@ -11,6 +12,7 @@ def sortcards(cardlist, rank: bool=False):
     if rank: return [rankvalue(cardrank) for cardrank in cardlist]
     else: return sorted(cardlist, key=cardvalue)
 
+# Single-card section. 
 def ishigher(card1, card2):
     """Checks whether `card1` is higher than `card2`."""
     if dict[card1[0]] < dict[card2[0]]: return False
@@ -24,6 +26,7 @@ def countcards(hand, roundhistory):
     opponentcards = [cards for cards in allcards if str(roundhistory).count(cards)]
     return set(allcards).difference(hand, opponentcards)
 
+# Two-card section.
 def ispair(card1, card2):
     """Checks if two cards are a pair."""
     if card1[0] == card2[0]: return True
@@ -46,6 +49,7 @@ def countpairs(hand):
     legalpairs = [list(card) for card in list(itertools.combinations(hand, 2)) if ispair(card[0], card[1])]
     return legalpairs
 
+# Three-card section.
 def istriple(card1, card2, card3):
     """Checks whether cards are valid triples."""
     if card1[0] == card2[0] == card3[0]: return True
@@ -60,21 +64,42 @@ def counttriples(hand):
     """Returns legal triples from `hand`."""
     return [list(card) for card in list(itertools.combinations(hand, 3)) if istriple(card[0], card[1], card[2])]
 
+# Five-card section.
+def everyfivecard(hand):
+    """Returns every 5-card combination (not legal plays)."""
+    return [list(card) for card in list(itertools.combinations(hand, 5))]
+
 def isstraight(cards):
+    """Checks whether cards is a valid straight."""
     sortedhand = sortcards(cards, True)
     if sortedhand == list(range(min(sortedhand), max(sortedhand) + 1)): return True
     return False
 
 def isstraighthigher(stg1, stg2):
-    # Check if straights are higher.
-    pass
+    """Compares straights and checks whether `stg1` is higher than `stg2`."""
+    stg1 = sortcards(stg1)
+    stg2 = sortcards(stg2)
 
-def countstraights(hand):
-    # Count straights.
-    pass
+    if dict[stg1[4][0]] > dict[stg2[4][0]]: return True
+    elif dict[stg1[4][0]] == dict[stg2[4][0]]:
+        if dict[stg1[4][1]] > dict[stg2[4][1]]: return True
+        
+    return False
+
+def isflush(cards):
+    """Experimental: Checks whether cards is a valid flush."""
+    cardsets = set()
+    for cards in plays: cardsets.add(cards[1])
+    if len(cardsets) == 1: return True
+
+    return False
+
+def countflushes(hand):
+    """Experimental: Counts all possible flushes."""
+    return [plays for plays in everyfivecard(hand) if isflush(plays)]
 
 def isfullhouse(cards):
-    # Check if cards is a full house.
+    
     pass
 
 def findlegal(hand, playToBeat, playType: int=1):
@@ -83,3 +108,29 @@ def findlegal(hand, playToBeat, playType: int=1):
     if playType == 2: return [pairs for pairs in countpairs(hand) if ispairhigher(pairs, playToBeat)]
     if playType == 3: return [triples for triples in counttriples(hand) if istriplehigher(triples, playToBeat)]
     if playType == 5: pass # 5-card plays
+
+# Experimental!
+# Experimental!
+# Experimental!
+    
+#def fullhouse(hand):
+ #   allfaces = [f for f,s in hand]
+  #  allftypes = set(allfaces)
+  #  if len(allftypes) != 2:
+   #     return False
+  #  for f in allftypes:
+  #      if allfaces.count(f) == 3:
+  # #         allftypes.remove(f)
+   #         return 'full-house', [f, allftypes.pop()]
+   # else:
+   #     return False
+
+#def givefullhousepls(hand):
+   # for play in everyfivecard:
+   #     set = set{}
+  #      for card in play:
+   #         set.add(card[0])
+   #     if len(set) = 2:
+            
+             
+        
