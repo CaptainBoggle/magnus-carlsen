@@ -1,3 +1,0 @@
-1st August, 2019
-- Began writing NCSS bot for 1-card plays
-- Started work on bigtwo library
