@@ -1,3 +1,4 @@
+from itertools import cycle, combinations
 from dictionary import *
 from bigtwo import *
 import importlib
@@ -5,44 +6,53 @@ import random
 import struct
 import os
 
+def main():
+    # Prints out initial seed. Useful for repeating games.
+    cryptseed = struct.unpack("I", os.urandom(4))[0]
+    print("Using " + str(cryptseed) + " as seed.")
+    random.seed(cryptseed)
+
+    game = Bigtwo()
+    print(game.startingplayer())
+
 class Player:
-    def __init__(self, module, playerno, hand):
+    def __init__(self, module, id, hand):
         self.module = importlib.import_module(module)
         if not hasattr(self.module, "play"): raise RuntimeError("No play function found.")
-        self.playerno = playerno
         self.hand = hand
         self.score = 0
+        self.id = id
 
-    def play(self): return self.module.play(self.hand, False, [], [], self.playerno, (0, 0, 0, 0), (0, 0, 0, 0), 0)
+    def play(self, start, ptb, rh, handsize, scores, roundno):
+        return self.module.play(self.hand, start, ptb, rh, self.id, handsize, scores, roundno)
+
     def delcard(self, card): self.hand.remove(card)
     def addcard(self, card): self.hand.append(card)
 
-class Game:
+class Bigtwo:
     def __init__(self):
         self.roundno = 0
         self.players = []
-        self.forbidden = []
         self.playtobeat = []
         self.roundhistory = []
         self.roundstart = True
 
-    def fillplayers(self):
-        for i in range(4): self.players.append(Player("main", i, self.setuphands()))
+        for i in range(4): self.players.append(Player("main", i, self.handoutcards()))
 
-    def setuphands(self):
-        hand = []
-        while True:
-            if len(hand) == 13: break
-            card = random.choice(allcards)
-            if not card in self.forbidden:
-                self.forbidden.append(card)
-                hand.append(card)
-        return hand
+    def startrevolution(self):
+        starter = self.startingplayer()
+        starter.play(self.roundstart, self.playtobeat, self.roundhistory, 0, 0, self.roundno)
 
-cryptseed = struct.unpack("I", os.urandom(4))[0]
-print("Using " + str(cryptseed) + " as seed.")
-random.seed(cryptseed)
+    def startingplayer(self):
+        if self.roundstart:
+            for players in self.players:
+                if "3D" in players.hand:
+                    return players
 
-newgame = Game()
-newgame.fillplayers()
-print(newgame.players[0].play())
+    def handoutcards(self):
+        cards = random.sample(allcards, k=13)
+        for card in cards: allcards.remove(card)
+        return cards
+
+if __name__ == "__main__":
+    main()
