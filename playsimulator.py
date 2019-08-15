@@ -37,7 +37,6 @@ class Game:
             if not card in self.forbidden:
                 self.forbidden.append(card)
                 hand.append(card)
-            else: pass
         return hand
 
 cryptseed = struct.unpack("I", os.urandom(4))[0]
