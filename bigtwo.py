@@ -132,15 +132,3 @@ def findlegal(hand, playToBeat, playType: int=1):
     if playType == 2: return [pairs for pairs in countpairs(hand) if ispairhigher(pairs, playToBeat)]
     if playType == 3: return [triples for triples in counttriples(hand) if istriplehigher(triples, playToBeat)]
     if playType == 5: pass # 5-card plays
-
-"""
-def isfullhousehigher(first, second):
-    counts1 = {}
-    counts2 = {}
-    for card in first: counts1[card[0]] = counts1.get(card[0], 0) + 1
-    for card in second: counts2[card[0]] = counts2.get(card[0], 0) + 1
-    invertdict1 = {v: k for k, v in counts1.items()}
-    invertdict2 = {v: k for k, v in counts2.items()}
-    if dict[invertdict1[3]] > dict[invertdict2[3]]: return True
-    return False
-"""
