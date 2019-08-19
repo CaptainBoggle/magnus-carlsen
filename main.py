@@ -4,6 +4,7 @@ def play(hand, roundStart, playToBeat, roundHistory, playerNo, handSize, scores,
     # If we are starting, play the lowest card or 3 of diamonds.
     if len(playToBeat) == 0:
         if roundStart: return ["3D"]
+        elif findlegal(hand, playToBeat, 5): return findlegal(hand, playToBeat, 5)
         elif counttriples(hand): return counttriples(hand)[0]
         elif countpairs(hand): return countpairs(hand)[0]
         else: return [sortcards(hand)[0]]
