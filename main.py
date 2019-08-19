@@ -1,17 +1,19 @@
 from bigtwo import *
 
 def play(hand, roundStart, playToBeat, roundHistory, playerNo, handSize, scores, roundNo):
-    # If we are starting, play the lowest card or 3 of diamonds.
     if len(playToBeat) == 0:
         if roundStart: return ["3D"]
-        elif findlegal(hand, playToBeat, 5): return findlegal(hand, playToBeat, 5)
+        elif everyfivecard(hand, "fullhouse"): return everyfivecard(hand, "fullhouse")[0]
+        elif everyfivecard(hand, "flush"): return everyfivecard(hand, "flush")[0]
+        elif everyfivecard(hand, "straight"): return everyfivecard(hand, "straight")[0]
         elif counttriples(hand): return counttriples(hand)[0]
         elif countpairs(hand): return countpairs(hand)[0]
         else: return [sortcards(hand)[0]]
+    
     elif len(playToBeat) == 1 and findlegal(hand, playToBeat, 1): return [findlegal(hand, playToBeat, 1)[0]]
     elif len(playToBeat) == 2 and findlegal(hand, playToBeat, 2): return findlegal(hand, playToBeat, 2)[0]
     elif len(playToBeat) == 3 and findlegal(hand, playToBeat, 3): return findlegal(hand, playToBeat, 3)[0]
-    elif len(playToBeat) == 5 and findlegal(hand, playToBeat, 5): return findlegal(hand, playToBeat, 5)[0][0]
+    elif len(playToBeat) == 5 and findlegal(hand, playToBeat, 5): return findlegal(hand, playToBeat, 5)[0]
 
     return []
 

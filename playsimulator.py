@@ -41,7 +41,7 @@ class Game:
     def revolution(self, index):
         localplayer = self.players[index]
         if self.roundstart and self.roundhistory: self.roundstart = False
-        if self.passes == 3: raise RuntimeWarning("One revolution has passed.")
+        if self.passes == 3: raise NotImplementedError("One revolution has passed.")
 
         play = localplayer.play(self.roundstart, self.playtobeat, self.roundhistory, 0, 0, 0, self.roundno)
         if not self.checkcards(localplayer, play): raise RuntimeError("Bot tried to play card(s) not in hand!")
