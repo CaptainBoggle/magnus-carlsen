@@ -56,10 +56,10 @@ class Game:
             if len(play) == 0: 
                 self.passes += 1
                 return False
-
             elif not "3D" in play: raise RuntimeError("Bot exceeded play to beat limit.")
             else: return True
 
+        self.passes = 0
         if len(play) == 1: return ishigher(play[0], self.playtobeat[0])
         else: return False
 
