@@ -1,7 +1,7 @@
 from dictionary import *
 from itertools import *
 
-def rankvalue(card): return dict[card[0]] / 10
+def rankvalue(card): return int(dict[card[0]] / 10)
 def cardvalue(card): return dict[card[0]] + dict[card[-1]]
 def seperatehand(hand, suit): return [card for card in hand if card[1] == suit]
 
