@@ -100,6 +100,7 @@ def isflushhigher(first, second):
     return False
 
 def isfullhouse(cards):
+    """Checks whether `cards` is a valid full house."""
     cardset = {card[0] for card in cards}
     if len(cardset) != 2: return False
     
@@ -113,11 +114,18 @@ def isfullhouse(cards):
     return False
 
 def isfullhousehigher(first, second):
+    """Checks whether `first` is higher than `second`."""
     first = [list(triple) for triple in combinations(first, 3) if istriple(triple[0], triple[1], triple[2])]
     second = [list(triple) for triple in combinations(second, 3) if istriple(triple[0], triple[1], triple[2])]
 
     if dict[first[0][0][0]] > dict[second[0][0][0]]: return True
     return False
+
+def fetchtype(cards):
+    """Returns type of 5-card play, given an input of `cards`."""
+    if isstraight(cards): return "straight"
+    if isflush(cards): return "flush"
+    if isfullhouse(cards): return "fullhouse"
 
 def everyfivecard(hand, type: str=None):
     """Returns every 5-card combination depending on `type`."""
@@ -128,7 +136,14 @@ def everyfivecard(hand, type: str=None):
 
 def findlegal(hand, playToBeat, playType: int=1):
     """Finds legal moves with your hand and the current play to beat."""    
-    if playType == 1: return sortcards([immigrant for immigrant in hand if ishigher(immigrant, playToBeat[0])])
-    if playType == 2: return [pairs for pairs in countpairs(hand) if ispairhigher(pairs, playToBeat)]
+    if playType == 5:
+        plays = []
+        beatType = fetchtype(playToBeat)
+        if beatType == "straight": plays += [play for play in everyfivecard(hand, beatType) if isstraighthigher(play, playToBeat)]
+        if beatType == "flush": plays += [play for play in everyfivecard(hand, beatType) if isstraighthigher(play, playToBeat)]
+        if beatType == "fullhouse": plays += [play for play in everyfivecard(hand, beatType) if isfullhousehigher(play, playToBeat)]
+        return plays
+    
     if playType == 3: return [triples for triples in counttriples(hand) if istriplehigher(triples, playToBeat)]
-    if playType == 5: pass # 5-card plays
+    if playType == 2: return [pairs for pairs in countpairs(hand) if ispairhigher(pairs, playToBeat)]
+    if playType == 1: return sortcards([immigrant for immigrant in hand if ishigher(immigrant, playToBeat[0])])

@@ -10,6 +10,7 @@ def play(hand, roundStart, playToBeat, roundHistory, playerNo, handSize, scores,
     elif len(playToBeat) == 1 and findlegal(hand, playToBeat, 1): return [findlegal(hand, playToBeat, 1)[0]]
     elif len(playToBeat) == 2 and findlegal(hand, playToBeat, 2): return findlegal(hand, playToBeat, 2)[0]
     elif len(playToBeat) == 3 and findlegal(hand, playToBeat, 3): return findlegal(hand, playToBeat, 3)[0]
+    elif len(playToBeat) == 5 and findlegal(hand, playToBeat, 5): return findlegal(hand, playToBeat, 5)[0][0]
 
     return []
 
