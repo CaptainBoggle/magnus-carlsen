@@ -1,5 +1,5 @@
+from itertools import combinations
 from dictionary import *
-from itertools import *
 
 def rankvalue(card): return int(dict[card[0]] / 10)
 def cardvalue(card): return dict[card[0]] + dict[card[-1]]
@@ -143,14 +143,24 @@ def isfourofakindhigher(first, second):
 # rip felix, imagine being 1.5x slower
 
 def isstraightflush(cards):
-    if isflush(sortcards(cards)) and isstraight(sortcards(cards)): return True
-    else: return False
+    """Checks whether `cards` is a valid straight flush."""
+    if isstraight(cards) and isflush(cards): return True
+    return False
+
+def isstraightflushhigher(first, second):
+    """Checks whether `first` is higher than `second`."""
+    first = sortcards(first)
+    second = sortcards(second)
+
+    return ishigher(first[4], second[4])
 
 def fetchtype(cards):
     """Returns type of 5-card play, given an input of `cards`."""
     if isstraight(cards): return "straight"
     elif isflush(cards): return "flush"
     elif isfullhouse(cards): return "fullhouse"
+    elif isfourofakind(cards): return "fourofakind"
+    elif isstraightflush(cards): return "straightflush"
 
 def everyfivecard(hand, type: str=None):
     """Returns every 5-card combination depending on `type`."""
@@ -158,6 +168,8 @@ def everyfivecard(hand, type: str=None):
     if type == "flush": return [list(plays) for plays in combinations(hand, 5) if isflush(plays)]
     if type == "straight": return [list(plays) for plays in combinations(hand, 5) if isstraight(plays)]
     if type == "fullhouse": return [list(plays) for plays in combinations(hand, 5) if isfullhouse(plays)]
+    if type == "fourofakind": return [list(plays) for plays in combinations(hand, 5) if isfourofakind(plays)]
+    if type == "straightflush": return [list(plays) for plays in combinations(hand, 5) if isstraightflush(plays)]
 
 def findlegal(hand, playToBeat, playType: int=1):
     """Finds legal moves with your hand and the current play to beat."""    
@@ -167,6 +179,8 @@ def findlegal(hand, playToBeat, playType: int=1):
         if beatType == "straight": plays += [play for play in everyfivecard(hand, beatType) if isstraighthigher(play, playToBeat)]
         if beatType == "flush": plays += [play for play in everyfivecard(hand, beatType) if isstraighthigher(play, playToBeat)]
         if beatType == "fullhouse": plays += [play for play in everyfivecard(hand, beatType) if isfullhousehigher(play, playToBeat)]
+        if beatType == "fourofakind": plays += [play for play in everyfivecard(hand, beatType) if isfourofakindhigher(play, playToBeat)]
+        if beatType == "straightflush": plays += [play for play in everyfivecard(hand, beatType) if isstraightflushhigher(play, playToBeat)]
         return plays
     
     if playType == 3: return [triples for triples in counttriples(hand) if istriplehigher(triples, playToBeat)]
