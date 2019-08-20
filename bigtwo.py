@@ -156,11 +156,11 @@ def isstraightflushhigher(first, second):
 
 def fetchtype(cards):
     """Returns type of 5-card play, given an input of `cards`."""
-    if isstraight(cards): return "straight"
-    elif isflush(cards): return "flush"
-    elif isfullhouse(cards): return "fullhouse"
+    if isstraightflush(cards): return "straightflush"
     elif isfourofakind(cards): return "fourofakind"
-    elif isstraightflush(cards): return "straightflush"
+    elif isfullhouse(cards): return "fullhouse"
+    elif isflush(cards): return "flush"
+    elif isstraight(cards): return "straight"
 
 def everyfivecard(hand, type: str=None):
     """Returns every 5-card combination depending on `type`."""

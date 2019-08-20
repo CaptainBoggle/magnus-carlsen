@@ -3,9 +3,11 @@ from bigtwo import *
 def play(hand, roundStart, playToBeat, roundHistory, playerNo, handSize, scores, roundNo):
     if len(playToBeat) == 0:
         if roundStart: return ["3D"]
+        elif everyfivecard(hand, "straightflush"): return everyfivecard(hand, "straightflush")[0]
+        elif everyfivecard(hand, "fourofakind"): return everyfivecard(hand, "fourofakind")[0]
         elif everyfivecard(hand, "fullhouse"): return everyfivecard(hand, "fullhouse")[0]
-        elif everyfivecard(hand, "flush"): return everyfivecard(hand, "flush")[0]
         elif everyfivecard(hand, "straight"): return everyfivecard(hand, "straight")[0]
+        elif everyfivecard(hand, "flush"): return everyfivecard(hand, "flush")[0]
         elif counttriples(hand): return counttriples(hand)[0]
         elif countpairs(hand): return countpairs(hand)[0]
         else: return [sortcards(hand)[0]]
