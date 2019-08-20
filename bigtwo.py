@@ -64,6 +64,11 @@ def counttriples(hand):
     """Returns legal triples from `hand`."""
     return [list(card) for card in combinations(hand, 3) if istriple(card[0], card[1], card[2])]
 
+# Four-card section (arbitrary card sorting)
+def countequalfours(cards):
+    """Returns equally ranked quads. Used for Four of a Kinds."""
+    return [list(card) for card in combinations(cards, 4) if card[0][0] == card[1][0] == card[2][0] == card[3][0]]
+
 # Five-card section.
 def isstraight(cards):
     """Checks whether `cards` is a valid straight."""
@@ -108,7 +113,7 @@ def isfullhouse(cards):
     if len(triples) > 1 or len(triples) == 0:
         cards = triples[0]
         return False
-    
+
     pairs = [list(pairs) for pairs in combinations(cards, 2) if ispair(pairs[0], pairs[1])]
     if pairs: return True
     return False
@@ -121,11 +126,34 @@ def isfullhousehigher(first, second):
     if dict[first[0][0][0]] > dict[second[0][0][0]]: return True
     return False
 
+def isfourofakind(cards):
+    """Checks whether `cards` is a valid four of a kind."""
+    if countequalfours(cards): return True
+    return False
+
+def isfourofakindhigher(first, second):
+    """Checks whether `first` is higher than `second`."""
+    first = countequalfours(first)
+    second = countequalfours(second)
+
+    if dict[first[0][0][0]] > dict[second[0][0][0]]: return True
+    return False
+
+# def isfourofakindhigher(first, second):
+# rip felix, imagine being 1.5x slower
+
+# VERY EXPERIMENTAL
+def isstraightflush(cards):
+    if isflush(sortcards(cards)) and isstraight(sortcards(cards)): return True
+    else: return False
+
+print(isstraightflush(['AC', 'KC', 'QC', 'JC', '0C']))
+
 def fetchtype(cards):
     """Returns type of 5-card play, given an input of `cards`."""
     if isstraight(cards): return "straight"
-    if isflush(cards): return "flush"
-    if isfullhouse(cards): return "fullhouse"
+    elif isflush(cards): return "flush"
+    elif isfullhouse(cards): return "fullhouse"
 
 def everyfivecard(hand, type: str=None):
     """Returns every 5-card combination depending on `type`."""
