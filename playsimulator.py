@@ -41,7 +41,8 @@ class Game:
     def revolution(self, index):
         localplayer = self.players[index]
         if self.roundstart and self.roundhistory: self.roundstart = False
-        if self.passes == 3: raise NotImplementedError("One revolution has passed.")
+        if self.passes == 3: self.trickreset()
+        if len(localplayer.hand) == 0: self.roundreset()
 
         play = localplayer.play(self.roundstart, self.playtobeat, self.roundhistory, 0, 0, 0, self.roundno)
         if not self.checkcards(localplayer, play): raise RuntimeError("Bot tried to play card(s) not in hand!")
@@ -51,11 +52,17 @@ class Game:
         print("Player", str(localplayer.id) + ":", play, sortcards(localplayer.hand))
         self.revolution((index + 1) % len(self.players))
 
+    def roundreset(self):
+        self.roundstart = True
+        self.roundno += 1
+        self.trickreset()
+
     def compareplays(self, play):
         if len(play) != len(self.playtobeat):
             if len(play) == 0: 
                 self.passes += 1
                 return False
+            elif len(self.playtobeat) == 0: return True
             elif not "3D" in play: raise RuntimeError("Bot exceeded play to beat limit.")
             else: return True
 
@@ -67,6 +74,10 @@ class Game:
         cards = random.sample(allcards, k=13)
         for card in cards: allcards.remove(card)
         return cards
+
+    def trickreset(self):
+        self.playtobeat = []
+        self.passes = 0
 
     def addhistory(self, id, cards):
         self.roundhistory.append((id, cards))
