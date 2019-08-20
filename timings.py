@@ -1,11 +1,6 @@
-from bigtwo import *
-import time
+import timeit
 
-def timefunc(function, *parameters: list):
-    firstrec = time.time()
-    function(parameters)
-    secndrec = time.time()
-    return str(secndrec - firstrec)
-
-print(timefunc(isfourofakind, ["2D", "2H", "2C", "2S", "4H"]))
-# Broke with more than one argument.
+def timefunc(function, *parameters):
+    firstrec = timeit.default_timer()
+    function(*parameters)
+    print(function.__name__ + ": " + str((timeit.default_timer() - firstrec) * 1000) + " milliseconds.")

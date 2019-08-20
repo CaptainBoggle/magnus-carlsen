@@ -142,12 +142,9 @@ def isfourofakindhigher(first, second):
 # def isfourofakindhigher(first, second):
 # rip felix, imagine being 1.5x slower
 
-# VERY EXPERIMENTAL
 def isstraightflush(cards):
     if isflush(sortcards(cards)) and isstraight(sortcards(cards)): return True
     else: return False
-
-print(isstraightflush(['AC', 'KC', 'QC', 'JC', '0C']))
 
 def fetchtype(cards):
     """Returns type of 5-card play, given an input of `cards`."""
