@@ -9,7 +9,7 @@ def sortcards(cardlist, rank: bool=False):
     """Sorts card using either `rankvalue()` or `cardvalue()`.
     
     If `rank` is true, returns rank. Else, returns total card value."""
-    if rank: return [rankvalue(cardrank) for cardrank in cardlist]
+    if rank: return sorted([rankvalue(cardrank) for cardrank in cardlist])
     else: return sorted(cardlist, key=cardvalue)
 
 # Single-card section. 
@@ -142,40 +142,50 @@ def isstraightflush(cards):
 
 def isstraightflushhigher(first, second):
     """Checks whether `first` is higher than `second`."""
-    first = sortcards(first)
-    second = sortcards(second)
+    return ishigher(sortcards(first)[4], sortcards(second)[4])
 
-    return ishigher(first[4], second[4])
-
-def fetchtype(cards):
+def fetchfivetype(cards):
     """Returns type of 5-card play, given an input of `cards`."""
-    if isstraightflush(cards): return "straightflush"
-    elif isfourofakind(cards): return "fourofakind"
-    elif isfullhouse(cards): return "fullhouse"
-    elif isflush(cards): return "flush"
-    elif isstraight(cards): return "straight"
+    if isstraightflush(cards): return "straightflush" # 1st
+    elif isfourofakind(cards): return "fourofakind" # 2nd
+    elif isfullhouse(cards): return "fullhouse" # 3rd
+    elif isstraight(cards): return "straight" # 5th
+    elif isflush(cards): return "flush" # 4th
 
 def everyfivecard(hand, type: str=None):
     """Returns every 5-card combination depending on `type`."""
-    if type == None: return [list(plays) for plays in combinations(hand, 5)]
-    if type == "flush": return [list(plays) for plays in combinations(hand, 5) if isflush(plays)]
-    if type == "straight": return [list(plays) for plays in combinations(hand, 5) if isstraight(plays)]
-    if type == "fullhouse": return [list(plays) for plays in combinations(hand, 5) if isfullhouse(plays)]
-    if type == "fourofakind": return [list(plays) for plays in combinations(hand, 5) if isfourofakind(plays)]
     if type == "straightflush": return [list(plays) for plays in combinations(hand, 5) if isstraightflush(plays)]
-
+    if type == "fourofakind": return [list(plays) for plays in combinations(hand, 5) if isfourofakind(plays)]
+    if type == "fullhouse": return [list(plays) for plays in combinations(hand, 5) if isfullhouse(plays)]
+    if type == "straight": return [list(plays) for plays in combinations(hand, 5) if isstraight(plays)]
+    if type == "flush": return [list(plays) for plays in combinations(hand, 5) if isflush(plays)]
+    if type == None: return [list(plays) for plays in combinations(hand, 5)]
+    
 def findlegal(hand, playToBeat, playType: int=1):
     """Finds legal moves with your hand and the current play to beat."""    
     if playType == 5:
         plays = []
-        beatType = fetchtype(playToBeat)
+        beatType = fetchfivetype(playToBeat)
+        if beatType == "straightflush": plays += [play for play in everyfivecard(hand, beatType) if isstraightflushhigher(play, playToBeat)]
+        if beatType == "fourofakind": plays += [play for play in everyfivecard(hand, beatType) if isfourofakindhigher(play, playToBeat)]
+        if beatType == "fullhouse": plays += [play for play in everyfivecard(hand, beatType) if isfullhousehigher(play, playToBeat)]
         if beatType == "straight": plays += [play for play in everyfivecard(hand, beatType) if isstraighthigher(play, playToBeat)]
         if beatType == "flush": plays += [play for play in everyfivecard(hand, beatType) if isflushhigher(play, playToBeat)]
-        if beatType == "fullhouse": plays += [play for play in everyfivecard(hand, beatType) if isfullhousehigher(play, playToBeat)]
-        if beatType == "fourofakind": plays += [play for play in everyfivecard(hand, beatType) if isfourofakindhigher(play, playToBeat)]
-        if beatType == "straightflush": plays += [play for play in everyfivecard(hand, beatType) if isstraightflushhigher(play, playToBeat)]
         return plays
     
     if playType == 3: return [triples for triples in counttriples(hand) if istriplehigher(triples, playToBeat)]
     if playType == 2: return [pairs for pairs in countpairs(hand) if ispairhigher(pairs, playToBeat)]
     if playType == 1: return sortcards([immigrant for immigrant in hand if ishigher(immigrant, playToBeat[0])])
+
+# This function isn't really used. Made for:
+# https://groklearning.com/learn/challenge-advanced-2019/w4-tournament/10/
+# Big Two: Compare any play (arbitrary number of cards)
+
+def isplaybetter(first, second):
+    if len(first) != len(second): return False
+    elif len(first) == 1: return ishigher(first[0], second[0])
+    elif len(first) == 2: return ispairhigher(first, second)
+    elif len(first) == 3: return istriplehigher(first, second)
+    elif len(first) == 5:
+        if fetchfivetype(first) != fetchfivetype(second): return False
+        else: pass
