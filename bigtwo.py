@@ -177,7 +177,7 @@ def findlegal(hand, playToBeat, playType: int=1):
         plays = []
         beatType = fetchtype(playToBeat)
         if beatType == "straight": plays += [play for play in everyfivecard(hand, beatType) if isstraighthigher(play, playToBeat)]
-        if beatType == "flush": plays += [play for play in everyfivecard(hand, beatType) if isstraighthigher(play, playToBeat)]
+        if beatType == "flush": plays += [play for play in everyfivecard(hand, beatType) if isflushhigher(play, playToBeat)]
         if beatType == "fullhouse": plays += [play for play in everyfivecard(hand, beatType) if isfullhousehigher(play, playToBeat)]
         if beatType == "fourofakind": plays += [play for play in everyfivecard(hand, beatType) if isfourofakindhigher(play, playToBeat)]
         if beatType == "straightflush": plays += [play for play in everyfivecard(hand, beatType) if isstraightflushhigher(play, playToBeat)]
