@@ -187,5 +187,10 @@ def isplaybetter(first, second):
     elif len(first) == 2: return ispairhigher(first, second)
     elif len(first) == 3: return istriplehigher(first, second)
     elif len(first) == 5:
-        if fetchfivetype(first) != fetchfivetype(second): return False
-        else: pass
+        if fivecard[fetchfivetype(first)] > fivecard[fetchfivetype(second)]: return True
+        elif fivecard[fetchfivetype(first)] < fivecard[fetchfivetype(second)]: return False
+        elif fetchfivetype(first) == "straightflush": return isstraightflushhigher(first, second)
+        elif fetchfivetype(first) == "fourofakind": return isfourofakindhigher(first, second)
+        elif fetchfivetype(first) == "fullhouse": return isfullhousehigher(first, second)
+        elif fetchfivetype(first) == "straight": return isstraighthigher(first, second)
+        elif fetchfivetype(first) == "flush": return isflushhigher(first, second)
