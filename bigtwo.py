@@ -78,14 +78,7 @@ def isstraight(cards):
 
 def isstraighthigher(first, second):
     """Compares straights and checks whether `first` is higher than `second`."""
-    first = sortcards(first)
-    second = sortcards(second)
-
-    if dict[first[4][0]] > dict[second[4][0]]: return True
-    elif dict[first[4][0]] == dict[second[4][0]]:
-        if dict[first[4][1]] > dict[second[4][1]]: return True
-        
-    return False
+    return ishigher(sortcards(first)[4], sortcards(second)[4])
 
 def isflush(cards):
     """Checks whether `cards` is a valid flush."""
