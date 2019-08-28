@@ -45,7 +45,7 @@ def ispairhigher(first, second):
     return False
 
 def countpairs(hand):
-    """Returns legal pairs from `cardlist`."""
+    """Returns legal pairs from `hand`."""
     legalpairs = [list(card) for card in combinations(hand, 2) if ispair(card[0], card[1])]
     return legalpairs
 
@@ -194,3 +194,13 @@ def isplaybetter(first, second):
         elif fetchfivetype(first) == "fullhouse": return isfullhousehigher(first, second)
         elif fetchfivetype(first) == "straight": return isstraighthigher(first, second)
         elif fetchfivetype(first) == "flush": return isflushhigher(first, second)
+
+# This function isn't really used. Made for:
+# https://groklearning.com/learn/challenge-advanced-2019/w5-tournament/5/
+# Big Two: Beat this Pair? (cards remaining vs pair)
+
+def canpairbebeat(remaining, pair):
+    for rempairs in countpairs(remaining):
+        if ispairhigher(rempairs, pair): return True
+    
+    return False
